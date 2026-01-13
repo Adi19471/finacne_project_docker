@@ -2,38 +2,48 @@ version: "3.9"
 
 services:
   mysql:
-    image: mysql:8
+    image: mysql:8.0
     container_name: mysql
+    restart: always
     environment:
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: appdb
+      MYSQL_DATABASE: financial_db
+    ports:
+      - "3306:3306"
     volumes:
       - mysql-data:/var/lib/mysql
+      - ./logs/mysql:/var/log/mysql
     networks:
       - backend
 
   backend:
-    image: springboot-app
+    build: ./backend
     container_name: backend
+    restart: always
     depends_on:
       - mysql
     ports:
-      - "8080:8080"
+      - "8881:8881"
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/appdb
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/financial_db
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: root
+    volumes:
+      - ./backend/logs:/app/logs
     networks:
       - backend
       - frontend
 
   frontend:
-    image: react-app
+    build: ./frontend
     container_name: frontend
+    restart: always
     ports:
       - "3000:80"
     depends_on:
       - backend
+    volumes:
+      - ./logs/nginx:/var/log/nginx
     networks:
       - frontend
 
@@ -43,4 +53,3 @@ networks:
 
 volumes:
   mysql-data:
-

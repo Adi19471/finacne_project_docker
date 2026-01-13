@@ -1,9 +1,11 @@
-FROM openjdk:17-jdk-slim
+FROM eclipse-temurin:21-jre-alpine
 
 WORKDIR /app
 
-COPY target/sri-balaji-finance-0.0.1-SNAPSHOT.jar 
+COPY target/finance-service.jar finance-service.jar
 
-EXPOSE 8080
+RUN mkdir -p /app/logs
 
-ENTRYPOINT ["java","-jar","sri-balaji-finance-0.0.1-SNAPSHOT.jar "]
+EXPOSE 8881
+
+ENTRYPOINT ["java","-jar","finance-service.jar"]
