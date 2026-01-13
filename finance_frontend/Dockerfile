@@ -7,7 +7,7 @@ RUN npm install
 
 COPY . .
 
-# Optional: logs folder inside container
+
 RUN mkdir -p /app/logs
 
 EXPOSE 5173
