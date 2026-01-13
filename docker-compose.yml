@@ -12,7 +12,7 @@ services:
       - "3306:3306"
     volumes:
       - mysql-data:/var/lib/mysql
-      - ./logs/mysql:/var/log/mysql
+      - ./logs/mysql:/var/log/mysql       # host-mapped logs
     networks:
       - backend
 
@@ -25,31 +25,30 @@ services:
     ports:
       - "8881:8881"
     environment:
+      SPRING_PROFILES_ACTIVE: prod
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/financial_db
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: root
     volumes:
-      - ./backend/logs:/app/logs
+      - ./backend/logs:/app/logs          
     networks:
       - backend
-      - frontend
 
   frontend:
     build: ./frontend
     container_name: frontend
     restart: always
     ports:
-      - "3000:80"
+      - "5173:5173"
     depends_on:
       - backend
     volumes:
-      - ./logs/nginx:/var/log/nginx
+      - ./frontend/logs:/app/logs        
     networks:
-      - frontend
+      - backend
 
 networks:
   backend:
-  frontend:
 
 volumes:
   mysql-data:
