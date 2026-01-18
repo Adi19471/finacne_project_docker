@@ -27,9 +27,11 @@ export default defineConfig({
   assetsInclude: ["**/*.png", "**/*.jpg", "**/*.jpeg", "**/*.svg"],
 
   server: {
+    host: true,
+    port: 5173,
     proxy: {
       "/balaji-finance": {
-        target: process.env.VITE_API_BASE || "http://localhost:8881",
+        target: process.env.VITE_API_BASE || "http://backend:8881",
         changeOrigin: true,
         secure: false,
       },
