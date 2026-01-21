@@ -20,7 +20,7 @@ import com.balaji.finance.service.UserService;
 public class UserController {
 
 	@Autowired
-	private UserService userService;
+	private UserService userService; 
 
 	@PostMapping("/users")
 	public ResponseEntity<String> saveUser(@Valid @RequestBody UserSaveReq userSaveReq) {
